@@ -10,8 +10,8 @@ class Slot:
 
     # Iniciar a função
     async def iniciar(self):
-        resultado = []
         while True:
+            resultado = []
             # Enviar solicitação GET para o site
             response = requests.get(self.url)
             # Verificar se a solicitação foi bem-sucedida (código de status 200)

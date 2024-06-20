@@ -1,21 +1,23 @@
 from flet import *
 from requisições.req import Slot
-from time import sleep
+import asyncio
+
 
 def main(page: Page):
-    # page.window_height = 800
-    # page.window_width = 600
-    # page.horizontal_alignment = CrossAxisAlignment.CENTER
-    # page.vertical_alignment = MainAxisAlignment.CENTER
+    page.window_height = 750
+    page.window_width = 600
+    
     
     page.snack_bar = SnackBar(Text(value='Começando...'))
     page.snack_bar.open = False
-    page.update()
 
     async def inicia(e):
-        page.snack_bar.open = True
-        try:
-            if texto_iniciar.value == 'Iniciar':
+        if texto_iniciar.value == 'Iniciar':
+            page.snack_bar.open = True
+            page.update()
+            while True:
+                await asyncio.sleep(6)
+                
                 slot = Slot()
                 resultados = await slot.iniciar()
 
@@ -25,19 +27,12 @@ def main(page: Page):
                             Column(
                                 controls=[
                                     Container(
-                                        Column(
-                                            controls=[Image(src=url)]
-                                        )
-                                    ),
-                                    Container(
-                                        content=Column(
-                                            controls=[
-                                                Text(value=nome),
-                                                Text(value=porcentagem)
+                                        Column(controls=[
+                                            Image(src=url),
+                                            Text(value=f'{nome} -- Chance de Ganho: {porcentagem}')
                                             ]
                                         )
                                     )
-                                    
                                 ]
                             )
                         )
@@ -52,36 +47,24 @@ def main(page: Page):
 
                 Botao_iniciar_stop.bgcolor = colors.RED
                 Botao_iniciar_stop.update()
-            else:
-                if texto_iniciar.value == 'Parar':
-                    icone.name = icons.PLAY_CIRCLE
-                    icone.update()
 
-                    texto_iniciar.value = 'Iniciar'
-                    texto_iniciar.update()
-
-                    Botao_iniciar_stop.bgcolor = colors.GREEN
-                    Botao_iniciar_stop.update()
-
-                    for url, nome, porcentagem in resultados:
-                        break
-                    page.update()
+        elif texto_iniciar.value == 'Parar':
+            page.snack_bar.open = False
             page.update()
-        except:
-            if texto_iniciar.value == 'Parar':
-                icone.name = icons.PLAY_CIRCLE
-                icone.update()
+            
+            icone.name = icons.PLAY_CIRCLE
+            icone.update()
 
-                texto_iniciar.value = 'Iniciar'
-                texto_iniciar.update()
+            texto_iniciar.value = 'Iniciar'
+            texto_iniciar.update()
 
-                Botao_iniciar_stop.bgcolor = colors.GREEN
-                Botao_iniciar_stop.update()
+            Botao_iniciar_stop.bgcolor = colors.GREEN
+            Botao_iniciar_stop.update()
+            
+            
 
-                for url, nome, porcentagem in resultados:
-                    break
-                page.update()
-    
+        page.update()
+
     # AppBar
     page.appbar = AppBar(
         leading=Icon(name=icons.DIAMOND),
@@ -92,14 +75,14 @@ def main(page: Page):
             IconButton(icon=icons.WB_SUNNY_OUTLINED),
             PopupMenuButton(
                 items=[
-                    PopupMenuItem(icon=icons.SUPPORT_AGENT,text='Suporte'),
-                    PopupMenuItem(), # Divisão
+                    PopupMenuItem(icon=icons.SUPPORT_AGENT, text='Suporte'),
+                    PopupMenuItem(),  # Divisão
                     PopupMenuItem(icon=icons.INFO, text='Sobre'),
                 ]
             ),
         ]
     )
-    
+
     # Imagens que Vão aparecer
     gridImagens = GridView(
         expand=1,
@@ -109,12 +92,11 @@ def main(page: Page):
         spacing=60,
         run_spacing=5,
     )
-    
+
     # Interface
     interface = Container(
         width=800,  # Largura
         height=530,  # Altura
-        # bgcolor='white',
         border_radius=border_radius.all(10),
         content=Container(
             Column(
@@ -125,23 +107,24 @@ def main(page: Page):
     # Botão
     icone = Icon(name=icons.PLAY_CIRCLE, size=30)
     texto_iniciar = Text(value='Iniciar', size=25)
-    
+
     Botao_iniciar_stop = Container(
         width=800,  # Largura
         height=50,  # Altura
         bgcolor=colors.GREEN,
         border_radius=border_radius.all(25),
-        on_click=inicia,
+        on_click=inicia,  # Correção para lidar com async
         content=Container(
             Row(alignment=MainAxisAlignment.CENTER,
                 controls=[
                     icone,
                     texto_iniciar
                 ]
-            )
+                )
         )
     )
-    
-    
+
     page.add(interface, Botao_iniciar_stop)
+
+
 app(target=main)
