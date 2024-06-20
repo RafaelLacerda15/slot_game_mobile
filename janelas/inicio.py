@@ -6,12 +6,10 @@ import asyncio
 def main(page: Page):
     page.window_height = 750
     page.window_width = 600
-    
-    
+
     page.snack_bar = SnackBar(Text(value='Começando...'))
     page.snack_bar.open = False
 
-    
     global continue_loop
     continue_loop = False
 
@@ -23,7 +21,7 @@ def main(page: Page):
             page.update()
             while continue_loop:
                 await asyncio.sleep(6)
-                
+
                 slot = Slot()
                 resultados = await slot.iniciar()
 
@@ -35,8 +33,9 @@ def main(page: Page):
                                     Container(
                                         Column(controls=[
                                             Image(src=url),
-                                            Text(value=f'{nome} -- Chance de Ganho: {porcentagem}')
-                                            ]
+                                            Text(
+                                                value=f'{nome} -- Chance de Ganho: {porcentagem}')
+                                        ]
                                         )
                                     )
                                 ]
@@ -58,7 +57,7 @@ def main(page: Page):
             continue_loop = False
             page.snack_bar.open = False
             page.update()
-            
+
             icone.name = icons.PLAY_CIRCLE
             icone.update()
 
