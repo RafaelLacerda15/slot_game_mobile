@@ -7,7 +7,7 @@ def main(page: Page):
     page.window_height = 750
     page.window_width = 600
 
-    page.snack_bar = SnackBar(Text(value='Começando...'))
+    page.snack_bar = SnackBar(content=Text(value='Começando...'))
     page.snack_bar.open = False
 
     global continue_loop
@@ -20,6 +20,7 @@ def main(page: Page):
             page.snack_bar.open = True
             page.update()
             while continue_loop:
+                gridImagens.controls.clear()
                 await asyncio.sleep(6)
 
                 slot = Slot()
@@ -42,6 +43,7 @@ def main(page: Page):
                             )
                         )
                     )
+
                 page.update()
 
                 icone.name = icons.STOP
@@ -79,8 +81,6 @@ def main(page: Page):
             IconButton(icon=icons.WB_SUNNY_OUTLINED),
             PopupMenuButton(
                 items=[
-                    PopupMenuItem(icon=icons.SUPPORT_AGENT, text='Suporte'),
-                    PopupMenuItem(),  # Divisão
                     PopupMenuItem(icon=icons.INFO, text='Sobre'),
                 ]
             ),

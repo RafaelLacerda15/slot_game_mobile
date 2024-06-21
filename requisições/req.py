@@ -52,7 +52,7 @@ class Slot:
                             if contador % 6 == 0:
                                 print('Aguarde 2 minutos')
                                 print('--' * 60)
-                                sleep(2)
+                                sleep(160)
                 return resultado
             else:
                 print("Falha ao acessar o site:", response.status_code)
