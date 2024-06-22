@@ -47,16 +47,11 @@ class Slot:
                             # print("Porcentagem:", self.porcentagemF)
                             # print("-" * 30)
                             
-                            
-
-                            if contador % 6 == 0:
-                                print('Aguarde 2 minutos')
-                                print('--' * 60)
-                                sleep(160)
+                            print('Iniciando')
                 return resultado
             else:
                 print("Falha ao acessar o site:", response.status_code)
 
 
-bot = Slot()
-bot.iniciar()
+# bot = Slot()
+# bot.iniciar()

@@ -2,7 +2,7 @@ from flet import *
 import asyncio
 
 
-def main(page: Page):
+def informacao(page: Page):
     page.window.height = 750
     page.window.width = 600
     
@@ -58,4 +58,4 @@ def main(page: Page):
     page.add(interce, plataforma_stake, plataforma_sssgame, plataforma_spicybet)
 
 
-app(target=main)
+app(target=informacao)

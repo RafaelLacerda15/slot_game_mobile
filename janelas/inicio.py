@@ -3,22 +3,26 @@ from requisições.req import Slot
 import asyncio
 
 
-def main(page: Page):
-    page.window_height = 750
-    page.window_width = 600
-
-    page.snack_bar = SnackBar(content=Text(value='Começando...'))
-    page.snack_bar.open = False
-
+def home(page: Page):
+    page.window.height = 750
+    page.window.width = 600
+    
+    snack_bar = SnackBar(content=Text(value='Começando...'))
+    snack_bar2 = SnackBar(content=Text(value='Aguarde 2 minutos...'))
+    page.overlay.append(snack_bar)
+    page.overlay.append(snack_bar2)
+    
     global continue_loop
     continue_loop = False
 
     async def inicia(e):
         global continue_loop
         if texto_iniciar.value == 'Iniciar':
+            
             continue_loop = True
-            page.snack_bar.open = True
+            snack_bar.open = True
             page.update()
+            
             while continue_loop:
                 gridImagens.controls.clear()
                 await asyncio.sleep(6)
@@ -43,7 +47,8 @@ def main(page: Page):
                             )
                         )
                     )
-
+                
+                snack_bar2.open = True
                 page.update()
 
                 icone.name = icons.STOP
@@ -57,8 +62,7 @@ def main(page: Page):
 
         elif texto_iniciar.value == 'Parar':
             continue_loop = False
-            page.snack_bar.open = False
-            page.update()
+            snack_bar.open = False
 
             icone.name = icons.PLAY_CIRCLE
             icone.update()
@@ -69,6 +73,7 @@ def main(page: Page):
             Botao_iniciar_stop.bgcolor = colors.GREEN
             Botao_iniciar_stop.update()
 
+            
         page.update()
 
     # AppBar
@@ -131,4 +136,4 @@ def main(page: Page):
     page.add(interface, Botao_iniciar_stop)
 
 
-app(target=main)
+app(target=home)
