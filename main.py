@@ -1,14 +1,20 @@
 from flet import *
-import janelas.inicio as inicio
-import janelas.info as info
+from janelas.changewindow import router
 
 
 def main(page: Page):
-    page.window_height = 750
-    page.window_width = 600
-    
-    
-    page.add()
+    page.update()
+
+
+    page.window.height = 750
+    page.window.width = 600
+    myRoute = router(page)
+
+
+    page.on_route_change = myRoute.route_change
+    page.theme_mode = "dark"
+    page.add(myRoute.body)
+    page.go('/')
 
 
 app(target=main)
