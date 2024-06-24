@@ -92,7 +92,6 @@ class home(UserControl):
                 ),
             ]
         )
-
         # Imagens que Vão aparecer
         self.gridImagens = GridView(
             expand=1,
@@ -102,7 +101,6 @@ class home(UserControl):
             spacing=60,
             run_spacing=5,
         )
-
         # Interface
         self.interface = Container(
             width=800,  # Largura
@@ -144,5 +142,28 @@ class home(UserControl):
     def build(self):
         return self.interfaces
     
-    def Change(self):
+    def voltar(self, e):
+
+        self.page.appbar.leading = Icon(name=icons.DIAMOND)
+        self.page.appbar.title = Text('Slots para Ganhar')
+        self.page.appbar.actions = [
+            IconButton(icon=icons.WB_SUNNY_OUTLINED),
+            PopupMenuButton(
+                items=[
+                    PopupMenuItem(icon=icons.INFO,
+                                  text='Sobre', on_click=self.Change),
+                ]
+            ),
+        ]
+
+        self.page.go('/')
+    
+    def Change(self, e):
+        
+        self.page.appbar.leading = IconButton(icon=icons.HOME, on_click=self.voltar)
+        self.page.appbar.title = Text('info')
+        self.page.appbar.actions = []
+        
         self.page.go('/info')
+        
+        

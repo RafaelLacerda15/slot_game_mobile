@@ -4,14 +4,16 @@ class info(UserControl):
     
     def __init__(self, page: Page):
         super().__init__()
-    
-        self.appBar = AppBar(leading=IconButton(icon=icons.HOME, on_click=self.Change), title=Text('info'), center_title=True, bgcolor=colors.BLUE_500,)
+        
         info = '''Aplicativo com intenção de ajudar você a ganhar nos slots das plataformas.
         Não me responsabilizando por quebras/perdas da banca. Quaisquer ações imprudentes serão do seu total concentimento.'''
         
-        self.plataforma_stake = WebView('stake.com/?c=6a4afcb1fc')
-        self.plataforma_sssgame = WebView('https://www.sssgame.com?code=1622706')
-        self.plataforma_spicybet = WebView('https://www.spicy01.com/c-sTBhfZ4J?lang=pt')
+        stake = 'stake.com/?c=6a4afcb1fc'
+        sssgame = 'https://www.sssgame.com?code=1622706'
+        spicyBet = 'https://www.spicy01.com/c-sTBhfZ4J?lang=pt'
+        self.plataforma_stake = WebView(url=stake, javascript_enabled=True)
+        self.plataforma_sssgame = WebView(url=sssgame, javascript_enabled=True)
+        self.plataforma_spicybet = WebView(url=spicyBet, javascript_enabled=True)
 
         self.interce = Container(
             height=750,
@@ -55,7 +57,3 @@ class info(UserControl):
     def platSpicyBet(self, e):
         plataforma_spicybet = WebView('https://www.spicy01.com/c-sTBhfZ4J?lang=pt')
         print(f'Abrindo: {plataforma_spicybet}')
-    
-    def Change(self, e):
-        self.page.go('/home')
-        

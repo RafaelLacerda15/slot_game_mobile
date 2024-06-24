@@ -12,7 +12,7 @@ class router:
             '/info': info(page)
         }
         self.body = Container(content=self.routers['/'])
-
+        
     def route_change(self, route):
         self.body.content = self.routers[route.route]
         self.body.update()
