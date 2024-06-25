@@ -100,7 +100,7 @@ def main(page: Page):
         
         page.appbar.leading = IconButton(icon=icons.HOME, on_click=voltar)
         page.appbar.title = Text('info')
-        page.appbar.actions = []
+        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
         
         interce.visible = True
         
@@ -113,7 +113,7 @@ def main(page: Page):
         page.appbar.leading = Icon(name=icons.DIAMOND)
         page.appbar.title = Text('Slots para Ganhar')
         page.appbar.actions = [
-            IconButton(icon=icons.WB_SUNNY_OUTLINED),
+            IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme),
             PopupMenuButton(
                 items=[
                     PopupMenuItem(icon=icons.INFO,
@@ -127,7 +127,8 @@ def main(page: Page):
         page.update()
     
     def theme(e): # Mudar o tema da pagina
-        ...
+        page.theme_mode = 'Dark' if page.theme_mode == 'light' else 'light'
+        page.update()
             
     # Layout da página Informação    
     interce = Container(
@@ -139,7 +140,7 @@ def main(page: Page):
             content=Column(
                 horizontal_alignment=CrossAxisAlignment.CENTER,
                 controls=[
-                    Image(src='assets/slot.jpg', fit=ImageFit.COVER, width=250),
+                    Image(src='assets/slot.png', fit=ImageFit.COVER, width=250),
                     Text(value=info, text_align=TextAlign.CENTER, size=15),
                     Container(height=80),
                     Container(
@@ -171,7 +172,7 @@ def main(page: Page):
         center_title=True,
         bgcolor=colors.BLUE_500,
         actions=[
-            IconButton(icon=icons.WB_SUNNY_OUTLINED),
+            IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme),
             PopupMenuButton(
                 items=[
                     PopupMenuItem(icon=icons.INFO,
