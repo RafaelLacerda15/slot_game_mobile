@@ -126,6 +126,9 @@ def main(page: Page):
 
         page.update()
     
+    def theme(e): # Mudar o tema da pagina
+        ...
+            
     # Layout da página Informação    
     interce = Container(
         height=750,
