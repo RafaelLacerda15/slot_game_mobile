@@ -1,5 +1,5 @@
 from flet import *
-from requisições.req import Slot
+from req import Slot
 import asyncio
 
 def main(page: Page):
@@ -144,11 +144,11 @@ def main(page: Page):
                                       Container(
                                           Row(alignment=MainAxisAlignment.CENTER, controls=[
                                               IconButton(on_click=platSpicyBet, content=Image(
-                                                  src='image/Spicybet.webp', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/spyce.jpg', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
                                               IconButton(on_click=platStake, content=Image(
-                                                  src='image/icon.webp', fit=ImageFit.CONTAIN, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/stake.webp', fit=ImageFit.CONTAIN, height=100, border_radius=border_radius.all(50))),
                                               IconButton(on_click=platSssgame, content=Image(
-                                                  src='image/sssgame.png', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/sssgamer.webp', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
 
                                           ])
                                       )]
