@@ -3,6 +3,7 @@ from req import Slot
 import asyncio
 
 def main(page: Page):
+    page.adaptive = True
     page.window.height = 750
     page.window.width = 600
 
@@ -133,8 +134,9 @@ def main(page: Page):
             height=750,
             width=600,
             content=Column(
-                alignment=MainAxisAlignment.CENTER,
+                horizontal_alignment=CrossAxisAlignment.CENTER,
                 controls=[
+                    Image(src='assets/slot.jpg', fit=ImageFit.COVER, width=250),
                     Text(value=info, text_align=TextAlign.CENTER, size=15),
                     Container(height=80),
                     Container(
@@ -158,7 +160,7 @@ def main(page: Page):
             )
         )
     )
-    
+    interce.visible = False
     # AppBar
     page.appbar = AppBar(
         leading=Icon(name=icons.DIAMOND),
