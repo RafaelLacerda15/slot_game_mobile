@@ -19,6 +19,14 @@ def main(page: Page):
     global continue_loop
     continue_loop = False
 
+    plataforma_stake = WebView('stake.com/?c=6a4afcb1fc', javascript_enabled=True)
+    plataforma_stake.visible = False
+    
+    plataforma_sssgame = WebView('https://www.sssgame.com?code=1622706', javascript_enabled=True)
+    plataforma_sssgame.visible = False
+    
+    plataforma_spicybet = WebView('https://www.spicy01.com/c-sTBhfZ4J?lang=pt', javascript_enabled=True)
+    plataforma_spicybet.visible = False
     # Funções
     async def inicia(e): # Iniciar a raspagem de dados
         global continue_loop
@@ -83,20 +91,64 @@ def main(page: Page):
         page.update()
 
     def platStake(e): # Abrir site Stake
-        plataforma_stake = WebView('stake.com/?c=6a4afcb1fc', javascript_enabled=True)
+        interce.visible = False
+        
+        interface.visible = False
+        Botao_iniciar_stop.visible = False
+
+        plataforma_sssgame.visible = False
+        plataforma_spicybet.visible = False
+        plataforma_stake.visible = True
+        
+        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
+        page.appbar.title = Text('info')
+        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
+
+        page.update()
         print(f'Abrindo: {plataforma_stake}')
 
     def platSssgame(e):  # Abrir site SSSGame
-        plataforma_sssgame = WebView('https://www.sssgame.com?code=1622706', javascript_enabled=True)
+        
+        interce.visible = False
+
+        interface.visible = False
+        Botao_iniciar_stop.visible = False
+        
+        plataforma_stake.visible = False
+        plataforma_spicybet.visible = False
+        plataforma_sssgame.visible = True
+
+        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
+        page.appbar.title = Text('info')
+        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
+
+        page.update()
         print(f'Abrindo: {plataforma_sssgame}')
 
     def platSpicyBet(e):  # Abrir site spicybet
-        plataforma_spicybet = WebView('https://www.spicy01.com/c-sTBhfZ4J?lang=pt', javascript_enabled=True)
+        interce.visible = False
+
+        interface.visible = False
+        Botao_iniciar_stop.visible = False
+
+        plataforma_stake.visible = False
+        plataforma_sssgame.visible = False
+        plataforma_spicybet.visible = True
+
+        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
+        page.appbar.title = Text('info')
+        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
+
+        page.update()
         print(f'Abrindo: {plataforma_spicybet}')
     
     def change(e): # Mudar para página Informação
         interface.visible = False
         Botao_iniciar_stop.visible = False
+        
+        plataforma_stake.visible = False
+        plataforma_sssgame.visible = False
+        plataforma_spicybet.visible = False
         
         page.appbar.leading = IconButton(icon=icons.HOME, on_click=voltar)
         page.appbar.title = Text('info')
@@ -140,7 +192,7 @@ def main(page: Page):
             content=Column(
                 horizontal_alignment=CrossAxisAlignment.CENTER,
                 controls=[
-                    Image(src='assets/slot.png', fit=ImageFit.COVER, width=250),
+                    Image(src='assets/slot.png', fit=ImageFit.COVER, width=200),
                     Text(value=info, text_align=TextAlign.CENTER, size=15),
                     Container(height=80),
                     Container(
@@ -165,6 +217,7 @@ def main(page: Page):
         )
     )
     interce.visible = False
+    
     # AppBar
     page.appbar = AppBar(
         leading=Icon(name=icons.DIAMOND),
@@ -203,6 +256,7 @@ def main(page: Page):
             )
         )
     )
+    interface.visible = True
     
     # Botão
     icone = Icon(name=icons.PLAY_CIRCLE, size=30)
@@ -224,7 +278,7 @@ def main(page: Page):
     )
 
     # Adicionar a página Flet
-    page.add(interface, Botao_iniciar_stop, interce)
+    page.add(interface, interce, Botao_iniciar_stop, plataforma_stake, plataforma_sssgame, plataforma_spicybet)
 
 
 app(target=main)
