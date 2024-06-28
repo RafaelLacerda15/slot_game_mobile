@@ -22,10 +22,10 @@ def main(page: Page):
     plataforma_stake = WebView('stake.com/?c=6a4afcb1fc', javascript_enabled=True)
     plataforma_stake.visible = False
     
-    plataforma_sssgame = WebView('https://www.sssgame.com?code=1622706', javascript_enabled=True)
+    plataforma_sssgame = WebView('sssgame.com?code=1622706', javascript_enabled=True)
     plataforma_sssgame.visible = False
     
-    plataforma_spicybet = WebView('https://www.spicy01.com/c-sTBhfZ4J?lang=pt', javascript_enabled=True)
+    plataforma_spicybet = WebView('spicy01.com/c-sTBhfZ4J?lang=pt', javascript_enabled=True)
     plataforma_spicybet.visible = False
     # Funções
     async def inicia(e): # Iniciar a raspagem de dados
@@ -50,17 +50,19 @@ def main(page: Page):
                             Column(
                                 controls=[
                                     Container(
-                                        Column(controls=[
-                                            Image(src=url),
-                                            Text(
-                                                value=f'{nome} -- Chance de Ganho: {porcentagem}')
-                                        ]
+                                        on_click=tapImage,
+                                        content=Column(
+                                            controls=[
+                                                Image(src=url),
+                                                Text(value=f'{nome} -- Chance de Ganho: {porcentagem}')
+                                                ]
                                         )
                                     )
                                 ]
                             )
                         )
                     )
+                
 
                 page.update()
                 snack_bar2.open = True
@@ -89,6 +91,7 @@ def main(page: Page):
             Botao_iniciar_stop.update()
 
         page.update()
+        
 
     def platStake(e): # Abrir site Stake
         interce.visible = False
@@ -181,7 +184,9 @@ def main(page: Page):
     def theme(e): # Mudar o tema da pagina
         page.theme_mode = 'Dark' if page.theme_mode == 'light' else 'light'
         page.update()
-            
+        
+    def tapImage(e): # Abrir o slot no site
+        print('Abrindo Site...')
     # Layout da página Informação    
     interce = Container(
         height=750,
