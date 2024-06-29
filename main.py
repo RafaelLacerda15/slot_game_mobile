@@ -1,12 +1,13 @@
 from flet import *
 from req import Slot
 import asyncio
+# import webbrowser
 
 def main(page: Page):
     page.adaptive = True
-    page.window.height = 750
-    page.window.width = 600
-
+    page.window.height = 740
+    page.window.width = 430
+    page.window.always_on_top = True
 
     snack_bar = SnackBar(content=Text(value='Começando...'))
     snack_bar2 = SnackBar(content=Text(value='Aguarde 2 minutos...'))
@@ -18,19 +19,11 @@ def main(page: Page):
     
     global continue_loop
     continue_loop = False
-
-    plataforma_stake = WebView('stake.com/?c=6a4afcb1fc', javascript_enabled=True)
-    plataforma_stake.visible = False
     
-    plataforma_sssgame = WebView('sssgame.com?code=1622706', javascript_enabled=True)
-    plataforma_sssgame.visible = False
-    
-    plataforma_spicybet = WebView('spicy01.com/c-sTBhfZ4J?lang=pt', javascript_enabled=True)
-    plataforma_spicybet.visible = False
     # Funções
     async def inicia(e): # Iniciar a raspagem de dados
         global continue_loop
-        if texto_iniciar.value == 'Iniciar':
+        if icone.name == icons.PLAY_CIRCLE:
 
             continue_loop = True
             snack_bar.open = True
@@ -39,7 +32,7 @@ def main(page: Page):
             while continue_loop:
 
                 gridImagens.controls.clear()
-                await asyncio.sleep(6)
+                await asyncio.sleep(5)
 
                 slot = Slot()
                 resultados = await slot.iniciar()
@@ -49,15 +42,8 @@ def main(page: Page):
                         Container(
                             Column(
                                 controls=[
-                                    Container(
-                                        on_click=tapImage,
-                                        content=Column(
-                                            controls=[
-                                                Image(src=url),
-                                                Text(value=f'{nome} -- Chance de Ganho: {porcentagem}')
-                                                ]
-                                        )
-                                    )
+                                    Image(src=url),
+                                    Text(value=f'{nome} -- Vitória: {porcentagem}')
                                 ]
                             )
                         )
@@ -65,97 +51,51 @@ def main(page: Page):
                 
 
                 page.update()
-                snack_bar2.open = True
-                page.update()
 
                 icone.name = icons.STOP
                 icone.update()
 
-                texto_iniciar.value = 'Parar'
-                texto_iniciar.update()
-
-                Botao_iniciar_stop.bgcolor = colors.RED
+                Botao_iniciar_stop.controls[0].bgcolor = colors.RED
                 Botao_iniciar_stop.update()
 
-        elif texto_iniciar.value == 'Parar':
+                snack_bar2.open = True
+                page.update()
+                await asyncio.sleep(90)
+                
+        elif icone.name == icons.STOP:
             continue_loop = False
             snack_bar.open = False
 
             icone.name = icons.PLAY_CIRCLE
             icone.update()
 
-            texto_iniciar.value = 'Iniciar'
-            texto_iniciar.update()
-
-            Botao_iniciar_stop.bgcolor = colors.GREEN
+            Botao_iniciar_stop.controls[0].bgcolor = colors.GREEN
             Botao_iniciar_stop.update()
 
         page.update()
-        
-
+     
     def platStake(e): # Abrir site Stake
-        interce.visible = False
-        
-        interface.visible = False
-        Botao_iniciar_stop.visible = False
-
-        plataforma_sssgame.visible = False
-        plataforma_spicybet.visible = False
-        plataforma_stake.visible = True
-        
-        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
-        page.appbar.title = Text('info')
-        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
-
+        page.launch_url('stake.com/?c=6a4afcb1fc', web_window_name='Stake')
         page.update()
-        print(f'Abrindo: {plataforma_stake}')
-
+        # webbrowser.open('stake.com/?c=6a4afcb1fc')
+    
     def platSssgame(e):  # Abrir site SSSGame
-        
-        interce.visible = False
-
-        interface.visible = False
-        Botao_iniciar_stop.visible = False
-        
-        plataforma_stake.visible = False
-        plataforma_spicybet.visible = False
-        plataforma_sssgame.visible = True
-
-        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
-        page.appbar.title = Text('info')
-        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
-
+        page.launch_url('sssgame.com?code=1622706', web_window_name='SSSGAME')
         page.update()
-        print(f'Abrindo: {plataforma_sssgame}')
+        # webbrowser.open('sssgame.com?code=1622706')
 
     def platSpicyBet(e):  # Abrir site spicybet
-        interce.visible = False
-
-        interface.visible = False
-        Botao_iniciar_stop.visible = False
-
-        plataforma_stake.visible = False
-        plataforma_sssgame.visible = False
-        plataforma_spicybet.visible = True
-
-        page.appbar.leading = IconButton(icon=icons.ARROW_BACK, on_click=change)
-        page.appbar.title = Text('info')
-        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
-
+        page.launch_url('spicy01.com/c-sTBhfZ4J?lang=pt', web_window_name='Spicybet')
         page.update()
-        print(f'Abrindo: {plataforma_spicybet}')
+        # webbrowser.open('spicy01.com/c-sTBhfZ4J?lang=pt')
     
     def change(e): # Mudar para página Informação
         interface.visible = False
         Botao_iniciar_stop.visible = False
         
-        plataforma_stake.visible = False
-        plataforma_sssgame.visible = False
-        plataforma_spicybet.visible = False
         
         page.appbar.leading = IconButton(icon=icons.HOME, on_click=voltar)
         page.appbar.title = Text('info')
-        page.appbar.actions = [IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme)]
         
         interce.visible = True
         
@@ -168,12 +108,11 @@ def main(page: Page):
         page.appbar.leading = Icon(name=icons.DIAMOND)
         page.appbar.title = Text('Slots para Ganhar')
         page.appbar.actions = [
-            IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme),
+            
             PopupMenuButton(
-                items=[
-                    PopupMenuItem(icon=icons.INFO,
-                                  text='Sobre', on_click=change),
-                ]
+                items=[PopupMenuItem(icon=icons.INFO, text='Sobre', on_click=change),
+                       PopupMenuItem(),
+                       PopupMenuItem(icon=icons.WB_SUNNY_OUTLINED, text='Tema', on_click=theme),]
             ),
         ]
 
@@ -184,42 +123,45 @@ def main(page: Page):
     def theme(e): # Mudar o tema da pagina
         page.theme_mode = 'Dark' if page.theme_mode == 'light' else 'light'
         page.update()
-        
-    def tapImage(e): # Abrir o slot no site
-        print('Abrindo Site...')
+    
     # Layout da página Informação    
-    interce = Container(
-        height=750,
-        width=600,
-        content=Container(
-            height=750,
-            width=600,
-            content=Column(
-                horizontal_alignment=CrossAxisAlignment.CENTER,
-                controls=[
-                    Image(src='assets/slot.png', fit=ImageFit.COVER, width=200),
-                    Text(value=info, text_align=TextAlign.CENTER, size=15),
-                    Container(height=80),
-                    Container(
-                        Column(
-                            horizontal_alignment=CrossAxisAlignment.CENTER,
-                            controls=[Text(value='Acessem as plataformas para ganhar bônus no primeiro depósito!'),
-                                      Container(
-                                          Row(alignment=MainAxisAlignment.CENTER, controls=[
+    interce = ResponsiveRow(
+        controls=[
+            Container(
+                height=750,
+                width=600,
+                content=Container(
+                    height=750,
+                    width=600,
+                    content=Column(
+                        horizontal_alignment=CrossAxisAlignment.CENTER,
+                        controls=[
+                            Image(src='assets/slot.png',
+                                  fit=ImageFit.COVER, width=200),
+                            Text(value=info, text_align=TextAlign.CENTER, size=15),
+                            Container(height=80),
+                            Container(
+                                Column(
+                                    horizontal_alignment=CrossAxisAlignment.CENTER,
+                                    controls=[Text(value='Acessem as plataformas para ganhar bônus no primeiro depósito!'),
+                                              Container(
+                                        Row(alignment=MainAxisAlignment.CENTER, controls=[
                                               IconButton(on_click=platSpicyBet, content=Image(
-                                                  src='assets/spyce.jpg', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/spyce.jpg', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50), tooltip='SpicyBet')),
                                               IconButton(on_click=platStake, content=Image(
-                                                  src='assets/stake.webp', fit=ImageFit.CONTAIN, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/stake.webp', fit=ImageFit.CONTAIN, height=100, border_radius=border_radius.all(50), tooltip='stake')),
                                               IconButton(on_click=platSssgame, content=Image(
-                                                  src='assets/sssgamer.webp', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50))),
+                                                  src='assets/sssgamer.webp', fit=ImageFit.COVER, height=100, border_radius=border_radius.all(50), tooltip='sssgamer')),
 
-                                          ])
-                                      )]
-                        )
+                                              ])
+                                    )]
+                                )
+                            )
+                        ]
                     )
-                ]
+                )
             )
-        )
+        ]
     )
     interce.visible = False
     
@@ -230,11 +172,11 @@ def main(page: Page):
         center_title=True,
         bgcolor=colors.BLUE_500,
         actions=[
-            IconButton(icon=icons.WB_SUNNY_OUTLINED, on_click=theme),
             PopupMenuButton(
                 items=[
-                    PopupMenuItem(icon=icons.INFO,
-                                    text='Sobre', on_click=change),
+                    PopupMenuItem(icon=icons.INFO, text='Sobre', on_click=change),
+                    PopupMenuItem(),
+                    PopupMenuItem(icon=icons.WB_SUNNY_OUTLINED, text='Tema', on_click=theme),
                 ]
             ),
         ]
@@ -246,44 +188,50 @@ def main(page: Page):
         runs_count=5,
         max_extent=200,
         child_aspect_ratio=1.0,
-        spacing=60,
+        spacing=50,
         run_spacing=5,
     )
     
     # Layout da página Inicial
-    interface = Container(
-        width=800,  # Largura
-        height=530,  # Altura
-        border_radius=border_radius.all(10),
-        content=Container(
-            Column(
-                controls=[gridImagens]
+    interface = ResponsiveRow(
+        controls=[
+            Container(
+                bgcolor=colors.BLUE_500,
+                width=800,  # Largura
+                height=530,  # Altura
+                border_radius=border_radius.all(10),
+                content=Container(
+                    Column(
+                        controls=[gridImagens]
+                    )
+                )
             )
-        )
+        ]
     )
     interface.visible = True
     
     # Botão
-    icone = Icon(name=icons.PLAY_CIRCLE, size=30)
-    texto_iniciar = Text(value='Iniciar', size=25)
-    Botao_iniciar_stop = Container(
-        width=800,  # Largura
-        height=50,  # Altura
-        bgcolor=colors.GREEN,
-        border_radius=border_radius.all(25),
-        on_click=inicia,  # Correção para lidar com async
-        content=Container(
-            Row(alignment=MainAxisAlignment.CENTER,
-                controls=[
-                    icone,
-                    texto_iniciar
-                ]
+    icone = Icon(name=icons.PLAY_CIRCLE, size=50)
+    Botao_iniciar_stop = ResponsiveRow(
+        controls=[
+            Container(
+                col=1.8,
+                width=50,  # Largura
+                height=50,  # Altura
+                bgcolor=colors.GREEN,
+                border_radius=border_radius.all(25),
+                on_click=inicia,  # Correção para lidar com async
+                content=Container(
+                    Row(alignment=MainAxisAlignment.CENTER,
+                        controls=[icone]
+                        )
                 )
-        )
+            )
+        ]
     )
 
     # Adicionar a página Flet
-    page.add(interface, interce, Botao_iniciar_stop, plataforma_stake, plataforma_sssgame, plataforma_spicybet)
+    page.add(interface, interce, Botao_iniciar_stop)
 
 
 app(target=main)

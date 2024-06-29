@@ -10,6 +10,7 @@ class Slot:
 
     # Iniciar a função
     async def iniciar(self):
+        print('Iniciando')
         while True:
             resultado = []
             # Enviar solicitação GET para o site
@@ -47,11 +48,10 @@ class Slot:
                             # print("Porcentagem:", self.porcentagemF)
                             # print("-" * 30)
                             
-                            print('Iniciando')
                 return resultado
             else:
                 print("Falha ao acessar o site:", response.status_code)
-
+            sleep(160)
 
 # bot = Slot()
 # bot.iniciar()
