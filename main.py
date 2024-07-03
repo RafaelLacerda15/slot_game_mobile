@@ -1,7 +1,7 @@
 from flet import *
 from req import Slot
 import asyncio
-# import webbrowser
+import webbrowser
 
 def main(page: Page):
     page.adaptive = True
@@ -75,19 +75,20 @@ def main(page: Page):
         page.update()
      
     def platStake(e): # Abrir site Stake
-        page.launch_url('stake.com/?c=6a4afcb1fc', web_window_name='Stake')
-        page.update()
-        # webbrowser.open('stake.com/?c=6a4afcb1fc')
+        # page.launch_url('stake.com/?c=6a4afcb1fc', web_window_name='Stake')
+        # page.update()
+        webbrowser.open('stake.com/?c=6a4afcb1fc')
     
     def platSssgame(e):  # Abrir site SSSGame
-        page.launch_url('sssgame.com?code=1622706', web_window_name='SSSGAME')
-        page.update()
-        # webbrowser.open('sssgame.com?code=1622706')
+        # page.launch_url('sssgame.com?code=1622706', web_window_name='SSSGAME')
+        # page.update()
+        webbrowser.open('sssgame.com?code=1622706')
 
     def platSpicyBet(e):  # Abrir site spicybet
-        page.launch_url('spicy01.com/c-sTBhfZ4J?lang=pt', web_window_name='Spicybet')
+        webview = WebView(src="spicy01.com/c-sTBhfZ4J?lang=pt")
+        page.controls.clear()
+        page.add(webview)
         page.update()
-        # webbrowser.open('spicy01.com/c-sTBhfZ4J?lang=pt')
     
     def change(e): # Mudar para página Informação
         interface.visible = False
