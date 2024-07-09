@@ -10,10 +10,18 @@ def main(page: Page):
     page.window.width = 430
     page.window.always_on_top = True
 
+    # SnackBar PG
+    snack_bar_PG = SnackBar(content=Text(value='Começando! >>PG<<'))
+    page.overlay.append(snack_bar_PG)
+    # SnackBar PRAGMATIC
+    snack_bar_PRAGMATIC = SnackBar(content=Text(value='Começando! >>PRAGMATIC<<'))
+    page.overlay.append(snack_bar_PRAGMATIC)
+    # SnackBar Iniciando
     snack_bar = SnackBar(content=Text(value='Começando!'))
-    snack_bar2 = SnackBar(content=Text(value='Atualizando...'))
     page.overlay.append(snack_bar)
-    page.overlay.append(snack_bar2)
+    # SnackBar Atualizando
+    snack_bar_atualizando = SnackBar(content=Text(value='Atualizando...'))
+    page.overlay.append(snack_bar_atualizando)
 
     info = '''Aplicativo com intenção de ajudar você a ganhar nos slots das plataformas.
         Não me responsabilizando por quebras/perdas da banca. Quaisquer ações imprudentes serão do seu total concentimento.'''
@@ -22,9 +30,10 @@ def main(page: Page):
     continue_loop = False
     
     # Funções
-    async def inicia(e): # Iniciar a raspagem de dados
+    async def pgEpragCheckBox(e): # Iniciar a raspagem de dados
         global continue_loop
-        if icone.name == icons.PLAY_CIRCLE:
+        gridImagens.controls.clear()
+        if botao.icon == icons.PLAY_CIRCLE:
 
             continue_loop = True
             snack_bar.open = True
@@ -43,8 +52,13 @@ def main(page: Page):
                         Container(
                             Column(
                                 controls=[
-                                    Image(src=url),
-                                    Text(value=f'{nome} -- Vitória: {porcentagem}')
+                                    Container(
+                                        height=180,
+                                        content=Column([
+                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
+                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                        ])
+                                    ),
                                 ]
                             )
                         )
@@ -53,29 +67,148 @@ def main(page: Page):
 
                 page.update()
 
-                icone.name = icons.STOP
-                icone.update()
-
-                Botao_iniciar_stop.controls[0].bgcolor = colors.RED
-                Botao_iniciar_stop.update()
+                botao.icon = icons.STOP_CIRCLE
+                botao.icon_color = colors.RED
+                botao.update()
 
                 await asyncio.sleep(50)
                 
-                snack_bar2.open = True
+                snack_bar_atualizando.open = True
                 page.update()
                 
-        elif icone.name == icons.STOP:
+        elif botao.icon == icons.STOP_CIRCLE:
             continue_loop = False
             snack_bar.open = False
 
-            icone.name = icons.PLAY_CIRCLE
-            icone.update()
+            botao.icon = icons.PLAY_CIRCLE
+            botao.icon_color = colors.GREEN_300
+            botao.update()
+            gridImagens.controls.clear()
+            
+        page.update()
+        
+    async def pgsoftCheckBox(e):  # Iniciar a raspagem de dados
+        global continue_loop
+        gridImagens.controls.clear()
+        if botao.icon == icons.PLAY_CIRCLE:
 
-            Botao_iniciar_stop.controls[0].bgcolor = colors.GREEN
-            Botao_iniciar_stop.update()
+            continue_loop = True
+            snack_bar_PG.open = True
+            page.update()
+
+            while continue_loop:
+
+                gridImagens.controls.clear()
+                await asyncio.sleep(5)
+
+                slot = Slot()
+                resultados = await slot.pg()
+
+                for url, nome, porcentagem in resultados:
+                    gridImagens.controls.append(
+                        Container(
+                            Column(
+                                controls=[
+                                    Container(
+                                        height=180,
+                                        content=Column([
+                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
+                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                        ])
+                                    ),
+                                ]
+                            )
+                        )
+                    )
+                
+
+                page.update()
+
+                botao.icon = icons.STOP_CIRCLE
+                botao.icon_color = colors.RED
+                botao.update()
+
+                await asyncio.sleep(50)
+                
+                snack_bar_atualizando.open = True
+                page.update()
+                
+        elif botao.icon == icons.STOP_CIRCLE:
+            continue_loop = False
+            snack_bar_PG.open = False
+
+            botao.icon = icons.PLAY_CIRCLE
+            botao.icon_color = colors.GREEN_300
+            botao.update()
+            gridImagens.controls.clear()
 
         page.update()
-     
+        
+    async def pragmaticCheckBox(e): # Iniciar a raspagem de dados
+        global continue_loop
+        gridImagens.controls.clear()
+        if botao.icon == icons.PLAY_CIRCLE:
+
+            continue_loop = True
+            snack_bar_PRAGMATIC.open = True
+            page.update()
+
+            while continue_loop:
+
+                gridImagens.controls.clear()
+                await asyncio.sleep(5)
+
+                slot = Slot()
+                resultados = await slot.pragmatic()
+
+                for url, nome, porcentagem in resultados:
+                    gridImagens.controls.append(
+                        Container(
+                            Column(
+                                controls=[
+                                    Container(
+                                        height=180,
+                                        content=Column([
+                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
+                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                        ])
+                                    ),
+                                ]
+                            )
+                        )
+                    )
+                
+
+                page.update()
+
+                botao.icon = icons.STOP_CIRCLE
+                botao.icon_color = colors.RED
+                botao.update()
+
+                await asyncio.sleep(50)
+                
+                snack_bar_atualizando.open = True
+                page.update()
+                
+        elif botao.icon == icons.STOP_CIRCLE:
+            continue_loop = False
+            snack_bar_PRAGMATIC.open = False
+
+            botao.icon = icons.PLAY_CIRCLE
+            botao.icon_color = colors.GREEN_300
+            botao.update()
+            gridImagens.controls.clear()
+            
+        page.update()
+
+    async def verificarCheckBox(e): # Verificar o checkbox
+        if pg.value and pragmatic.value:
+            await pgEpragCheckBox(e)
+        elif pragmatic.value:
+            await pragmaticCheckBox(e)
+        elif pg.value:
+            await pgsoftCheckBox(e)
+            
     def platStake(e): # Abrir site Stake
         # page.launch_url('stake.com/?c=6a4afcb1fc', web_window_name='Stake')
         # page.update()
@@ -94,11 +227,18 @@ def main(page: Page):
     
     def change(e): # Mudar para página Informação
         interface.visible = False
-        Botao_iniciar_stop.visible = False
-        
+        provedoras.visible = False
         
         page.appbar.leading = IconButton(icon=icons.HOME, on_click=voltar)
         page.appbar.title = Text('info')
+        page.appbar.actions=[
+            PopupMenuButton(
+                items=[
+                    PopupMenuItem(icon=icons.WB_SUNNY_OUTLINED, text='Tema', on_click=theme),
+                    ]
+                ),
+            ]
+    
         
         interce.visible = True
         
@@ -106,12 +246,12 @@ def main(page: Page):
     
     def voltar(e):  # Mudar para página Inicial
         interface.visible = True
-        Botao_iniciar_stop.visible = True
-
+        provedoras.visible = True
+        
         page.appbar.leading = Icon(name=icons.DIAMOND)
         page.appbar.title = Text('Slots para Ganhar')
         page.appbar.actions = [
-            
+            botao,
             PopupMenuButton(
                 items=[PopupMenuItem(icon=icons.INFO, text='Sobre', on_click=change),
                        PopupMenuItem(),
@@ -126,7 +266,7 @@ def main(page: Page):
     def theme(e): # Mudar o tema da pagina
         page.theme_mode = 'Dark' if page.theme_mode == 'light' else 'light'
         page.update()
-    
+        
     # Layout da página Informação    
     interce = ResponsiveRow(
         controls=[
@@ -168,6 +308,9 @@ def main(page: Page):
     )
     interce.visible = False
     
+    # botao iconButton
+    botao = IconButton(icon=icons.PLAY_CIRCLE, icon_color=colors.GREEN_300, on_click=verificarCheckBox)
+    
     # AppBar
     page.appbar = AppBar(
         leading=Icon(name=icons.DIAMOND),
@@ -175,6 +318,7 @@ def main(page: Page):
         center_title=True,
         bgcolor=colors.BLUE_500,
         actions=[
+            botao,
             PopupMenuButton(
                 items=[
                     PopupMenuItem(icon=icons.INFO, text='Sobre', on_click=change),
@@ -195,13 +339,20 @@ def main(page: Page):
         run_spacing=5,
     )
     
+    # CheckBox
+    pg = Checkbox(label='PgSoft', value=False)
+    pragmatic = Checkbox(label='Pragmatic', value=False)
+    
+    # Escolher a provedora
+    provedoras = Row([pg, pragmatic], alignment=MainAxisAlignment.CENTER)
+    
     # Layout da página Inicial
     interface = ResponsiveRow(
         controls=[
             Container(
-                bgcolor=colors.BLUE_500,
+                # bgcolor=colors.BLUE_500,
                 width=800,  # Largura
-                height=530,  # Altura
+                height=580,  # Altura
                 border_radius=border_radius.all(10),
                 content=Container(
                     Column(
@@ -213,28 +364,8 @@ def main(page: Page):
     )
     interface.visible = True
     
-    # Botão
-    icone = Icon(name=icons.PLAY_CIRCLE, size=50)
-    Botao_iniciar_stop = ResponsiveRow(
-        controls=[
-            Container(
-                col=1.8,
-                width=50,  # Largura
-                height=50,  # Altura
-                bgcolor=colors.GREEN,
-                border_radius=border_radius.all(25),
-                on_click=inicia,  # Correção para lidar com async
-                content=Container(
-                    Row(alignment=MainAxisAlignment.CENTER,
-                        controls=[icone]
-                        )
-                )
-            )
-        ]
-    )
-
     # Adicionar a página Flet
-    page.add(interface, interce, Botao_iniciar_stop)
+    page.add(provedoras,interface, interce)
 
 
 app(target=main)
