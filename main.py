@@ -3,14 +3,15 @@ from req import Slot
 import asyncio
 import webbrowser
 
+
 def main(page: Page):
     page.adaptive = True
     page.window.height = 740
     page.window.width = 430
     page.window.always_on_top = True
 
-    snack_bar = SnackBar(content=Text(value='Começando...'))
-    snack_bar2 = SnackBar(content=Text(value='Aguarde 2 minutos...'))
+    snack_bar = SnackBar(content=Text(value='Começando!'))
+    snack_bar2 = SnackBar(content=Text(value='Atualizando...'))
     page.overlay.append(snack_bar)
     page.overlay.append(snack_bar2)
 
@@ -58,9 +59,10 @@ def main(page: Page):
                 Botao_iniciar_stop.controls[0].bgcolor = colors.RED
                 Botao_iniciar_stop.update()
 
+                await asyncio.sleep(50)
+                
                 snack_bar2.open = True
                 page.update()
-                await asyncio.sleep(90)
                 
         elif icone.name == icons.STOP:
             continue_loop = False
