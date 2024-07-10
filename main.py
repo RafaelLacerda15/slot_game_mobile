@@ -272,7 +272,7 @@ def main(page: Page):
         controls=[
             Container(
                 height=750,
-                width=600,
+                width=800,
                 content=Container(
                     height=750,
                     width=600,
@@ -352,7 +352,7 @@ def main(page: Page):
             Container(
                 # bgcolor=colors.BLUE_500,
                 width=800,  # Largura
-                height=580,  # Altura
+                height=510,  # Altura
                 border_radius=border_radius.all(10),
                 content=Container(
                     Column(
