@@ -91,7 +91,7 @@ class Slot:
                             porcentagem = produto.find("div", class_="game__percent--number")
                             self.porcentagemF = porcentagem.text
 
-                            if self.porcentagemF in ['97%', '98%', '99%']:
+                            if self.porcentagemF in ['98%', '99%']:
 
                                 if self.nomeF not in self.info:
                                     self.info[self.nomeF] = self.porcentagemF
@@ -137,7 +137,7 @@ class Slot:
                     porcentagem = produto.find("div", class_="game__percent--number")
                     self.porcentagemF = porcentagem.text
 
-                    if self.porcentagemF in ['97%', '98%', '99%']:
+                    if self.porcentagemF in ['98%', '99%']:
 
                         if self.nomeF not in self.info:
                             self.info[self.nomeF] = self.porcentagemF

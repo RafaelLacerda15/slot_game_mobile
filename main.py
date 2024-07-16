@@ -34,8 +34,59 @@ def main(page: Page):
     continue_loop = False
     
     # Funções
+    async def funcaoPg(e): # Fazendo a iteração sobre a requeisição
+        gridImagens.controls.clear()
+        await asyncio.sleep(5)
+
+        slot = Slot()
+        resultados = await slot.pg()
+
+        for url, nome, porcentagem in resultados:
+            gridImagens.controls.append(
+                Container(
+                    Column(
+                        controls=[
+                            Container(
+                                height=180,
+                                content=Column([
+                                    Image(
+                                        src=url, width=180, border_radius=border_radius.all(25)),
+                                    Text(
+                                        value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                ])
+                            ),
+                        ]
+                    )
+                )
+            )
+
+    async def funcaoPrag(e): # Fazendo a iteração sobre a requeisição
+        gridImagens.controls.clear()
+        await asyncio.sleep(5)
+
+        slot = Slot()
+        resultados = await slot.pragmatic()
+
+        for url, nome, porcentagem in resultados:
+            gridImagens.controls.append(
+                Container(
+                    Column(
+                        controls=[
+                            Container(
+                                height=180,
+                                content=Column([
+                                    Image(
+                                        src=url, width=180, border_radius=border_radius.all(25)),
+                                    Text(
+                                        value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                ])
+                            ),
+                        ]
+                    )
+                )
+            )
     
-    async def funcao(e): # Fazendo a iteração sobre a requeisição
+    async def funcaoTudo(e): # Fazendo a iteração sobre a requeisição
         gridImagens.controls.clear()
         await asyncio.sleep(5)
 
@@ -74,7 +125,7 @@ def main(page: Page):
 
             while continue_loop:
 
-                await funcao(e)
+                await funcaoTudo(e)
 
                 page.update()
 
@@ -121,7 +172,7 @@ def main(page: Page):
 
             while continue_loop:
 
-                await funcao(e)
+                await funcaoPg(e)
 
                 page.update()
 
@@ -167,7 +218,7 @@ def main(page: Page):
 
             while continue_loop:
 
-                await funcao(e)
+                await funcaoPrag(e)
                 
                 page.update()
 
@@ -224,7 +275,8 @@ def main(page: Page):
     def change(e): # Mudar para página Informação
         interface.visible = False
         provedoras.visible = False
-        
+        amostra.visible = False
+
         page.appbar.leading = IconButton(icon=icons.HOME, on_click=voltar)
         page.appbar.title = Text('info')
         page.appbar.actions=[
@@ -243,7 +295,8 @@ def main(page: Page):
     def voltar(e):  # Mudar para página Inicial
         interface.visible = True
         provedoras.visible = True
-        
+        amostra.visible = True
+
         page.appbar.leading = Icon(name=icons.DIAMOND)
         page.appbar.title = Text('Slots para Ganhar')
         page.appbar.actions = [
@@ -349,7 +402,7 @@ def main(page: Page):
             margin=margin.only(top=200),
             content=Column([
                 Image(
-                    src='https://media.tenor.com/WUWygJ0Fwz8AAAAM/jago33-slot-machine.gif')
+                    src='assets/jago33-slot-machine.gif')
             ], horizontal_alignment=CrossAxisAlignment.CENTER)
         )
     ])
@@ -375,7 +428,7 @@ def main(page: Page):
     interface.visible = False
     
     # Adicionar a página Flet
-    page.add(provedoras, interface, amostra, interce)
+    page.add(provedoras, interface, interce, amostra, )
 
 
 app(target=main)
