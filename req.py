@@ -153,7 +153,6 @@ class Slot:
                 return resultado
             else:
                 print("Falha ao acessar o site:", response.status_code)
-            sleep(160)
 
 # bot = Slot()
 # bot.pragmatic()

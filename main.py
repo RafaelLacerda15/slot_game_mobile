@@ -193,6 +193,7 @@ def main(page: Page):
         elif botao.icon == icons.STOP_CIRCLE:
             continue_loop = False
             snack_bar_PRAGMATIC.open = False
+            
 
             botao.icon = icons.PLAY_CIRCLE
             botao.icon_color = colors.GREEN_300
@@ -202,12 +203,12 @@ def main(page: Page):
         page.update()
 
     async def verificarCheckBox(e): # Verificar o checkbox
-        if pg.value and pragmatic.value:
-            await pgEpragCheckBox(e)
+        if pg.value:
+            await pgsoftCheckBox(e)
         elif pragmatic.value:
             await pragmaticCheckBox(e)
-        elif pg.value:
-            await pgsoftCheckBox(e)
+        elif todos.value:
+            await pgEpragCheckBox(e)
             
     def platStake(e): # Abrir site Stake
         # page.launch_url('stake.com/?c=6a4afcb1fc', web_window_name='Stake')
@@ -342,16 +343,19 @@ def main(page: Page):
     # CheckBox
     pg = Checkbox(label='PgSoft', value=False)
     pragmatic = Checkbox(label='Pragmatic', value=False)
+    todos = Checkbox(label='Todas', value=False)
+
     
     # Escolher a provedora
-    provedoras = Row([pg, pragmatic], alignment=MainAxisAlignment.CENTER)
+    provedoras = Row([pg, pragmatic, todos], alignment=MainAxisAlignment.CENTER)
     
     # Layout da página Inicial
     interface = ResponsiveRow(
         controls=[
             Container(
+                col={"sm": 4, "md": 6, "xl": 20},
                 # bgcolor=colors.BLUE_500,
-                width=800,  # Largura
+                # width=800,  # Largura
                 height=510,  # Altura
                 border_radius=border_radius.all(10),
                 content=Container(
@@ -360,7 +364,8 @@ def main(page: Page):
                     )
                 )
             )
-        ]
+        ],
+        run_spacing={"xl": 10}
     )
     interface.visible = True
     
