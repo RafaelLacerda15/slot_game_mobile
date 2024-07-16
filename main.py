@@ -9,19 +9,23 @@ def main(page: Page):
     page.window.height = 740
     page.window.width = 430
     page.window.always_on_top = True
+    page.bgcolor = 'blue'
 
     # SnackBar PG
-    snack_bar_PG = SnackBar(content=Text(value='Começando! >>PG<<'))
+    snack_bar_PG = SnackBar(content=Text(value='>>PG<<'))
     page.overlay.append(snack_bar_PG)
     # SnackBar PRAGMATIC
-    snack_bar_PRAGMATIC = SnackBar(content=Text(value='Começando! >>PRAGMATIC<<'))
+    snack_bar_PRAGMATIC = SnackBar(content=Text(value='>>PRAGMATIC<<'))
     page.overlay.append(snack_bar_PRAGMATIC)
-    # SnackBar Iniciando
-    snack_bar = SnackBar(content=Text(value='Começando!'))
+    # SnackBar Todas Plataformas
+    snack_bar = SnackBar(content=Text(value='>>Todas Plataformas<<'))
     page.overlay.append(snack_bar)
     # SnackBar Atualizando
     snack_bar_atualizando = SnackBar(content=Text(value='Atualizando...'))
     page.overlay.append(snack_bar_atualizando)
+    # SnackBar Finalizando
+    snack_bar_finalizando = SnackBar(content=Text(value='Parando Slots'))
+    page.overlay.append(snack_bar_finalizando)
 
     info = '''Aplicativo com intenção de ajudar você a ganhar nos slots das plataformas.
         Não me responsabilizando por quebras/perdas da banca. Quaisquer ações imprudentes serão do seu total concentimento.'''
@@ -30,9 +34,38 @@ def main(page: Page):
     continue_loop = False
     
     # Funções
+    
+    async def funcao(e): # Fazendo a iteração sobre a requeisição
+        gridImagens.controls.clear()
+        await asyncio.sleep(5)
+
+        slot = Slot()
+        resultados = await slot.iniciar()
+
+        for url, nome, porcentagem in resultados:
+            gridImagens.controls.append(
+                Container(
+                    Column(
+                        controls=[
+                            Container(
+                                height=180,
+                                content=Column([
+                                    Image(
+                                        src=url, width=180, border_radius=border_radius.all(25)),
+                                    Text(
+                                        value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
+                                ])
+                            ),
+                        ]
+                    )
+                )
+            )
+
     async def pgEpragCheckBox(e): # Iniciar a raspagem de dados
         global continue_loop
+        amostra.visible = False
         gridImagens.controls.clear()
+        interface.visible = True
         if botao.icon == icons.PLAY_CIRCLE:
 
             continue_loop = True
@@ -41,29 +74,7 @@ def main(page: Page):
 
             while continue_loop:
 
-                gridImagens.controls.clear()
-                await asyncio.sleep(5)
-
-                slot = Slot()
-                resultados = await slot.iniciar()
-
-                for url, nome, porcentagem in resultados:
-                    gridImagens.controls.append(
-                        Container(
-                            Column(
-                                controls=[
-                                    Container(
-                                        height=180,
-                                        content=Column([
-                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
-                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
-                                        ])
-                                    ),
-                                ]
-                            )
-                        )
-                    )
-                
+                await funcao(e)
 
                 page.update()
 
@@ -77,19 +88,31 @@ def main(page: Page):
                 page.update()
                 
         elif botao.icon == icons.STOP_CIRCLE:
+            snack_bar_finalizando.open = True
+            
             continue_loop = False
             snack_bar.open = False
+            snack_bar_atualizando.open = False
+            
+            amostra.visible = True
+            interface.visible = False
 
             botao.icon = icons.PLAY_CIRCLE
             botao.icon_color = colors.GREEN_300
             botao.update()
+            
+            todos.value = False
+            
             gridImagens.controls.clear()
             
         page.update()
         
     async def pgsoftCheckBox(e):  # Iniciar a raspagem de dados
         global continue_loop
+        amostra.visible = False
         gridImagens.controls.clear()
+        interface.visible = True
+        
         if botao.icon == icons.PLAY_CIRCLE:
 
             continue_loop = True
@@ -98,29 +121,7 @@ def main(page: Page):
 
             while continue_loop:
 
-                gridImagens.controls.clear()
-                await asyncio.sleep(5)
-
-                slot = Slot()
-                resultados = await slot.pg()
-
-                for url, nome, porcentagem in resultados:
-                    gridImagens.controls.append(
-                        Container(
-                            Column(
-                                controls=[
-                                    Container(
-                                        height=180,
-                                        content=Column([
-                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
-                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
-                                        ])
-                                    ),
-                                ]
-                            )
-                        )
-                    )
-                
+                await funcao(e)
 
                 page.update()
 
@@ -134,19 +135,30 @@ def main(page: Page):
                 page.update()
                 
         elif botao.icon == icons.STOP_CIRCLE:
+            snack_bar_finalizando.open = True
+            
             continue_loop = False
             snack_bar_PG.open = False
+            snack_bar_atualizando.open = False
+            
+            amostra.visible = True
+            interface.visible = False
 
             botao.icon = icons.PLAY_CIRCLE
             botao.icon_color = colors.GREEN_300
             botao.update()
+            
+            pg.value = False
+            
             gridImagens.controls.clear()
 
         page.update()
         
     async def pragmaticCheckBox(e): # Iniciar a raspagem de dados
         global continue_loop
+        amostra.visible = False
         gridImagens.controls.clear()
+        interface.visible = True
         if botao.icon == icons.PLAY_CIRCLE:
 
             continue_loop = True
@@ -155,30 +167,8 @@ def main(page: Page):
 
             while continue_loop:
 
-                gridImagens.controls.clear()
-                await asyncio.sleep(5)
-
-                slot = Slot()
-                resultados = await slot.pragmatic()
-
-                for url, nome, porcentagem in resultados:
-                    gridImagens.controls.append(
-                        Container(
-                            Column(
-                                controls=[
-                                    Container(
-                                        height=180,
-                                        content=Column([
-                                            Image(src=url, width=180, border_radius=border_radius.all(25)),
-                                            Text(value=f'{nome} -- Vitória: {porcentagem}', weight=FontWeight.BOLD)
-                                        ])
-                                    ),
-                                ]
-                            )
-                        )
-                    )
+                await funcao(e)
                 
-
                 page.update()
 
                 botao.icon = icons.STOP_CIRCLE
@@ -191,13 +181,21 @@ def main(page: Page):
                 page.update()
                 
         elif botao.icon == icons.STOP_CIRCLE:
+            snack_bar_finalizando.open = True
+            
             continue_loop = False
             snack_bar_PRAGMATIC.open = False
+            snack_bar_atualizando.open = False
             
-
+            amostra.visible = True
+            interface.visible = False
+            
             botao.icon = icons.PLAY_CIRCLE
             botao.icon_color = colors.GREEN_300
             botao.update()
+            
+            pragmatic.value = False
+            
             gridImagens.controls.clear()
             
         page.update()
@@ -221,10 +219,7 @@ def main(page: Page):
         webbrowser.open('sssgame.com?code=1622706')
 
     def platSpicyBet(e):  # Abrir site spicybet
-        webview = WebView(src="spicy01.com/c-sTBhfZ4J?lang=pt")
-        page.controls.clear()
-        page.add(webview)
-        page.update()
+        webbrowser.open("spicy01.com/c-sTBhfZ4J?lang=pt")
     
     def change(e): # Mudar para página Informação
         interface.visible = False
@@ -265,7 +260,7 @@ def main(page: Page):
         page.update()
     
     def theme(e): # Mudar o tema da pagina
-        page.theme_mode = 'Dark' if page.theme_mode == 'light' else 'light'
+        page.bgcolor = 'blue' if page.bgcolor == 'Dark' else 'Dark'
         page.update()
         
     # Layout da página Informação    
@@ -344,10 +339,20 @@ def main(page: Page):
     pg = Checkbox(label='PgSoft', value=False)
     pragmatic = Checkbox(label='Pragmatic', value=False)
     todos = Checkbox(label='Todas', value=False)
-
     
     # Escolher a provedora
     provedoras = Row([pg, pragmatic, todos], alignment=MainAxisAlignment.CENTER)
+    
+    # Mostrar uma imagem na tela Inicial
+    amostra = ResponsiveRow([
+        Container(
+            margin=margin.only(top=200),
+            content=Column([
+                Image(
+                    src='https://media.tenor.com/WUWygJ0Fwz8AAAAM/jago33-slot-machine.gif')
+            ], horizontal_alignment=CrossAxisAlignment.CENTER)
+        )
+    ])
     
     # Layout da página Inicial
     interface = ResponsiveRow(
@@ -367,10 +372,10 @@ def main(page: Page):
         ],
         run_spacing={"xl": 10}
     )
-    interface.visible = True
+    interface.visible = False
     
     # Adicionar a página Flet
-    page.add(provedoras,interface, interce)
+    page.add(provedoras, interface, amostra, interce)
 
 
 app(target=main)
